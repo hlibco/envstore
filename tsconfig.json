@@ -1,0 +1,43 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "ES6",
+    "outDir": "dist",
+    "module": "commonjs",
+    "noImplicitAny": false,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "declaration": true,
+    "sourceMap": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "importHelpers": true,
+    "inlineSourceMap": false,
+    "listFiles": false,
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strictNullChecks": true,
+		"traceResolution": false,
+    "forceConsistentCasingInFileNames": false,
+    "strict": true,
+    "esModuleInterop": true,
+    "pretty": true,
+    "lib" : [
+      "es6",
+      "esnext",
+      "dom"
+    ],
+    "baseUrl": "."
+  },
+  "include": [
+    "typings/*.d.ts",
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/__tests__"
+  ]
+}

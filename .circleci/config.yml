@@ -1,0 +1,85 @@
+version: 2
+restore_cache: &restore_cache
+  restore_cache:
+    keys:
+      - dependencies-cache-v1-{{ checksum "yarn.lock" }}
+
+save_cache: &save_cache
+  save_cache:
+    key: dependencies-cache-v1-{{ checksum "yarn.lock" }}
+    paths:
+      - ~/.npm
+
+codecov: &codecov
+  run:
+    name: Submit coverage reports to Codecov
+    command: bash <(curl -s https://codecov.io/bash)
+
+jobs:
+  build:
+    docker:
+      - image: circleci/node:8.11-stretch
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - *restore_cache
+      - run:
+          name: Install dependencies
+          command: yarn install
+      - *save_cache
+      - run:
+          name: Lint application
+          command: yarn lint
+      - run:
+          name: Build application
+          command: yarn build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./
+
+  test:
+    docker:
+      - image: circleci/node:8.11-stretch
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run tests
+          environment:
+            NODE_ENV: test
+          command: yarn cov
+      - *codecov
+
+  publish:
+    docker:
+      - image: circleci/node:8.11-stretch
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
+      - run:
+          name: Publish to NPM
+          command: |
+            chmod 777 ./scripts/npm-publish.sh
+            ./scripts/npm-publish.sh
+workflows:
+  version: 2
+  build-test-publish:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - publish:
+          requires:
+            - test
+          filters:
+            tags:
+              only:
+                - /(v)?[0-9]+(\.[0-9]+)*/
+            branches:
+              only:
+                - master

@@ -1,0 +1,15 @@
+.circleci
+coverage
+dist/__tests__
+node_modules
+scripts
+src
+.editorconfig
+.gitignore
+.npmignore
+.prettierrc
+logo.png
+tests.setup.js
+tsconfig.json
+tslint.json
+yarn-error.log

@@ -1,0 +1,92 @@
+{
+  "name": "envstore",
+  "description": "Load casted environment variables or throw if they don't exist",
+  "version": "0.1.0",
+  "author": "Felipe Hlibco <felipe@matterapp.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hlibco/envstore.git"
+  },
+  "bugs": {
+    "url" : "https://github.com/hlibco/envstore/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "rm -Rf ./.build && tsc",
+    "circleci": "circleci config validate -c .circleci/config.yml",
+    "precov": "rm -Rf ./coverage",
+    "cov": "jest --coverage --collectCoverage --verbose",
+    "cov:html": "yarn cov && opn coverage/index.html",
+    "lint": "tslint --project . -s node_modules/custom-tslint-formatters/formatters 'src/**/*.+(ts|js)' -t grouped",
+    "prettier": "prettier --write './src/**/*.ts'",
+    "release": "semantic-release",
+    "test": "jest --watch --verbose"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn prettier && yarn lint && yarn build && yarn cov && git add ."
+    }
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coverageReporters": [
+      "html",
+      "text",
+      "lcov"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 25,
+        "functions": 25,
+        "lines": 25,
+        "statements": 25
+      }
+    },
+    "globalSetup": "./tests.setup.js",
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ],
+    "notify": true,
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/.build/"
+    ]
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jest": "22.2.3",
+    "@types/node": "9.6.6",
+    "custom-tslint-formatters": "2.3.0",
+    "husky": "1.0.0-rc.2",
+    "jest": "22.4.3",
+    "prettier": "1.12.1",
+    "ts-jest": "22.4.4",
+    "ts-node": "6.0.0",
+    "tslib": "1.9.0",
+    "tslint": "5.9.1",
+    "tslint-config-prettier": "1.12.0",
+    "typescript": "2.8.3"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "typescript",
+    "env",
+    "envstore",
+    "config",
+    "configuration",
+    "environment",
+    "variables",
+    "env vars",
+    "envars"
+  ]
+}
