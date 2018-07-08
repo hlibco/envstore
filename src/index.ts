@@ -42,9 +42,9 @@ export default class Envstore {
 
 	pick<T>(prop: string, envs: object, fallback?): T {
 		if (envs[this.env]) {
-			return envs[this.env](prop, this)
+			return envs[this.env](prop)
 		} else if (fallback) {
-			return fallback()
+			return fallback(prop)
 		}
 
 		throw new Error(
